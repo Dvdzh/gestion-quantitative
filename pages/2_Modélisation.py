@@ -25,24 +25,35 @@ def predict_onnx(model_path, X_test):
 # Wide layout 
 st.set_page_config(layout="wide")
 
-# Two columns for dropdowns
-col1, col2 = st.columns(2)
+with st.sidebar:
+    model = st.selectbox("Select model", ["Logistic Regression",
+                                             "Decision Tree",
+                                             "Random Forest",
+                                             "Gradient Boosting",],
+                                             index=0)
+    
+    model_name_dict = {
+        "Logistic Regression": "Logistic",
+        "Decision Tree": "DecisionTree",
+        "Random Forest": "RandomForest",
+        "Gradient Boosting": "GradientBoosting",
+    }
+    model = model_name_dict[model]
 
-# # Create tabs for different stocks
-# tab1, tab2, tab3 = st.tabs(["AAPL", "GOOG", "MSFT"])
 
-
-# # dropdown method 
-# method = st.selectbox("Select Method", ["DecisionTree", 
-#                                         "GradientBoosting",
-#                                         "RandomForest",
-#                                         "Logistic"], 
-#                                     key=f"{TICKER}_method")
-
-tab1, tab2, tab3, tab4 = st.tabs(["Decision Tree", "Gradient Boosting", "Random Forest", "Logistic Regression"])
 
 def display_tab(method, TICKER): 
     
+    # Model name 
+    if method == "Logistic":
+        st.latex(r"P(Y=1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4)}}")
+    elif method == "DecisionTree":
+        st.latex(r"Y = \begin{cases} 1 & \text{if } X_1 \leq t_1 \\ 0 & \text{otherwise} \end{cases}")
+    elif method == "RandomForest":  
+        st.latex(r"Y = \frac{1}{N} \sum_{i=1}^{N} Y_i")
+    elif method == "GradientBoosting":
+        st.latex(r"Y = \sum_{m=1}^{M} \alpha_m h_m(X) + \beta")
+
     # 2 - Show confusion matrix
     with open(f"data/modelisation/results/{TICKER}_{method}_results.json", 'r') as f:
         data = json.load(f)
@@ -104,22 +115,22 @@ def display_tab(method, TICKER):
     prepared_df.rename(columns=name_dict, inplace=True)
     st.dataframe(prepared_df, use_container_width=True)  # streamlit pandas dataframe
 
-TICKER = "AAPL"
+# TICKER = "AAPL"
+# method = "Logistic"
+# # write logistic regression model 
+# st.latex(r"P(Y=1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4)}}")
+# display_tab(method, TICKER)
+
+tab1, tab2, tab3 = st.tabs(["AAPL", "GOOG", "MSFT"])
 with tab1:
-    method = "Logistic"
-    # write logistic regression model 
-    st.latex(r"P(Y=1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4)}}")
-    display_tab(method, TICKER)
+    TICKER = "AAPL"
+    display_tab(model, TICKER)
 with tab2:
-    # streamlit add svg 
-    method = "DecisionTree"
-    st.image("data/modelisation/images/output_19_0.svg")
-    display_tab(method, TICKER)
+    TICKER = "GOOGL"
+    # st.image("data/modelisation/images/output_19_0.svg")
+    display_tab(model, TICKER)
 with tab3:
-    method = "RandomForest"
-    st.image("data/modelisation/images/output_19_0.svg")
-    display_tab(method, TICKER)
-with tab4:
-    method = "GradientBoosting"
-    display_tab(method, TICKER)
+    TICKER = "MSFT"
+    # st.image("data/modelisation/images/output_19_0.svg")
+    display_tab(model, TICKER)
 

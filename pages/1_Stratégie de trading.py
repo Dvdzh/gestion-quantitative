@@ -5,24 +5,33 @@ import pandas as pd
 # Wide layout 
 st.set_page_config(layout="wide")
 
-# Two columns for dropdowns
-col1, col2 = st.columns(2)
+# # Two columns for dropdowns
+# col1, col2 = st.columns(2)
 
 # Create tabs for different stocks
 tab1, tab2, tab3 = st.tabs(["AAPL", "GOOG", "MSFT"])
 
-with col1:
-    # Strategy dropdown
-    strategy = st.selectbox("Select Strategy", ["Bollinger", 
-                                                "Momentum1Day", 
-                                                "Momentum5Days", 
-                                                "RSI", 
+with st.sidebar:
+    strategy = st.selectbox("Select Strategy", ["Bollinger",
+                                                "Momentum1Day",
+                                                "Momentum5Days",
+                                                "RSI",
                                                 "TDI",
                                                 "StochasticR",],
                                                 index=3)
-with col2:
-    # Holding date dropdown
     holding_date = st.selectbox("Select Holding Date", ["1", "5"])
+# with col1:
+#     # Strategy dropdown
+#     strategy = st.selectbox("Select Strategy", ["Bollinger", 
+#                                                 "Momentum1Day", 
+#                                                 "Momentum5Days", 
+#                                                 "RSI", 
+#                                                 "TDI",
+#                                                 "StochasticR",],
+#                                                 index=3)
+# with col2:
+#     # Holding date dropdown
+#     holding_date = st.selectbox("Select Holding Date", ["1", "5"])
 
 def display_html(TICKER, strategy, holding_date):
     try:
