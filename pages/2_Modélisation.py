@@ -8,7 +8,6 @@ import json
 
 import plotly.figure_factory as ff
 
-
 def predict_onnx(model_path, X_test):
     # Load the ONNX model
     onnx_session = ort.InferenceSession(model_path)
@@ -26,21 +25,47 @@ def predict_onnx(model_path, X_test):
 st.set_page_config(layout="wide")
 
 with st.sidebar:
-    model = st.selectbox("Select model", ["Logistic Regression",
-                                             "Decision Tree",
-                                             "Random Forest",
-                                             "Gradient Boosting",],
-                                             index=0)
-    
-    model_name_dict = {
-        "Logistic Regression": "Logistic",
-        "Decision Tree": "DecisionTree",
-        "Random Forest": "RandomForest",
-        "Gradient Boosting": "GradientBoosting",
-    }
-    model = model_name_dict[model]
-
-
+    # Présentation pour chaque modèle des paramètres utilisés pour l'optimisation
+    # Avec un bouton pour afficher/masquer les détails  
+    st.write("Régression logistique")
+    # Bouton dérouler pour plus d'informations 
+    with st.expander("Détails", expanded=False):
+        st.write("""
+            Optimisation des hyperparamètres pour la régression logistique :
+            - **Pénalité** : L2
+            - **C** : 0.1, 1, 10
+            - **Solveur** : lbfgs, liblinear
+            - **Max itérations** : 100, 500
+            """
+        )
+    st.write("Arbre de décision")
+    with st.expander("Détails", expanded=False):
+        st.write(
+            """
+            - **Profondeur maximale** : 3, 5, 8
+            - **Nombre minimum d'échantillons par feuille** : 1, 3
+            - **Critère** : gini, entropy
+            """
+        )
+    st.write("Forêt aléatoire")
+    with st.expander("Détails", expanded=False):
+        st.write(
+            """
+            - **Nombre d'estimateurs** : 200, 500
+            - **Profondeur maximale** : Default, 10
+            - **Nombre minimum d'échantillons par feuille** : 1, 3
+            - **Bootstrap** : True, False
+            """
+        )
+    st.write("Gradient boosting")
+    with st.expander("Détails", expanded=False):
+        st.write(
+            """
+            - **Nombre d'estimateurs** : 100, 300, 500
+            - **Taux d'apprentissage** : 0.05, 0.1, 0.2
+            - **Profondeur maximale** : 2, 3, 4
+            """
+        )
 
 def display_tab(method, TICKER): 
     
@@ -114,23 +139,99 @@ def display_tab(method, TICKER):
     )
     prepared_df.rename(columns=name_dict, inplace=True)
     st.dataframe(prepared_df, use_container_width=True)  # streamlit pandas dataframe
+    
+def display_content(TICKER):
 
-# TICKER = "AAPL"
-# method = "Logistic"
-# # write logistic regression model 
-# st.latex(r"P(Y=1|X) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4)}}")
-# display_tab(method, TICKER)
+    # Présentation des données d'entraînement
+    st.subheader("Aperçu des données d'entraînement")
+    st.write(
+        f"Le modèle a été entraîné sur les données de l'action {TICKER} (80% du dataset). "
+        "Les données comprennent les rendements sur 1 jour, 3 jours, la moyenne mobile sur 5 jours et la volatilité sur 5 jours. "
+        "Le modèle prédit si le prix de l'action augmentera (1) ou non (0)."
+    )
+    # Charger le tableau des données préparées
+    df = pd.read_csv(f"data/modelisation/prepared_data/{TICKER}_prepared.csv")
+    # Changer la couleur de la colonne target en rouge 
+    df = df.style.apply(lambda x: ['background: red' if x.name == 'target' else '' for i in x], axis=1)
+    st.dataframe(df, use_container_width=True)  # streamlit pandas dataframe
 
+    # Présentation des résultats
+    st.subheader("Aperçu des résultats")
+    st.write(
+        "Le modèle a été évalué sur un ensemble de test (20% du dataset). "
+        "La matrice de confusion, l'exactitude, la précision, le rappel et le score F1 sont affichés ci-dessous."
+    )
+    # Charger les résultats 
+    # Charger le tableau des résultats
+    df = pd.read_csv("data/modelisation/results/results.csv")
+    df = df[df["ticker"] == TICKER]
+    st.dataframe(df, use_container_width=True)  # streamlit pandas dataframe
+
+    # Afficher les 4 matrices de confusion 
+    figs = {}
+    for method in ["Logistic", "DecisionTree", "RandomForest", "GradientBoosting"]:
+        with open(f"data/modelisation/results/{TICKER}_{method}_results.json", 'r') as f:
+            data_temp = json.load(f)
+            z = data_temp["confusion_matrix"]
+            x = ["Predicted Negative", "Predicted Positive"]
+            y = ["Actual Negative", "Actual Positive"]
+            fig = ff.create_annotated_heatmap(z, x=x, y=y, colorscale="Viridis", showscale=True)
+            figs[method] = fig
+            # fig tight layout
+            fig.update_layout(
+                title=f"Matrice de confusion pour le modèle {method}",
+                xaxis_title="Prédiction",
+                yaxis_title="Vérité terrain",
+                width=500,
+                height=400,
+                # Centrer le titre
+                title_x=0.25,
+                title_y=0.95,
+                # Ajuster les bords 
+                margin=dict(l=20, r=20, t=100, b=20),
+            )
+    col1, col2 = st.columns(2)
+    with col1:
+        # st.legend("Matrice de confusion")
+        st.plotly_chart(figs["Logistic"], use_container_width=True)
+        st.plotly_chart(figs["DecisionTree"], use_container_width=True)
+    with col2:
+        st.plotly_chart(figs["RandomForest"], use_container_width=True)
+        st.plotly_chart(figs["GradientBoosting"], use_container_width=True)
+    
+    # Constat : 
+    # - une très bon recall : proche de 0.9, en effet on a presque toutes les jours de prédiction où le prix monte
+    # - mais un très mauvais precision : proche de 0.5, en effet on a beaucoup de faux positifs, la moitié ne sont pas des jours où le prix monte
+    # Pareil pour les trois modèles, on le modèle prédit souvent que le prix va monter, mais il se trompe souvent
+    # On pourrait faire une étude de l'influences des hyperparamètres pour identifier la source du problème
+
+    st.subheader("Analyse des résultats")
+    st.write(
+        "L'analyse des résultats montre que le modèle a une bonne capacité à prédire les jours où le prix de l'action augmente, "
+        "mais il a également un taux élevé de faux positifs. "
+        "Cela signifie que le modèle prédit souvent que le prix va augmenter, mais il se trompe fréquemment. "
+        "Cela peut être dû à un déséquilibre dans les données d'entraînement, où il y a plus de jours où le prix augmente que de jours où il diminue. "
+    )
+
+    st.subheader("Optimisation des hyperparamètres")
+    st.write(
+        "L'optimisation des hyperparamètres a été effectuée pour tenter d'améliorer les performances du modèle. "
+        "La configuration d'optimisation a été choisie et noté dans la side bar. "
+        "Les résultats de l'optimisation sont affichés ci-dessous, et on été réalisé pour maximiser l'accuracy."
+    )
+
+    
 tab1, tab2, tab3 = st.tabs(["AAPL", "GOOG", "MSFT"])
 with tab1:
     TICKER = "AAPL"
-    display_tab(model, TICKER)
+    display_content(TICKER)
 with tab2:
     TICKER = "GOOGL"
-    # st.image("data/modelisation/images/output_19_0.svg")
-    display_tab(model, TICKER)
+    display_content(TICKER)
 with tab3:
     TICKER = "MSFT"
-    # st.image("data/modelisation/images/output_19_0.svg")
-    display_tab(model, TICKER)
+    display_content(TICKER)
+
+
+
 

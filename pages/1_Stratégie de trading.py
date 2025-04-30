@@ -12,12 +12,21 @@ st.set_page_config(layout="wide")
 tab1, tab2, tab3 = st.tabs(["AAPL", "GOOG", "MSFT"])
 
 with st.sidebar:
-    strategy = st.selectbox("Select Strategy", ["Bollinger",
+    strategy = st.selectbox("Select Strategy", 
+                            [
+                                                "RSI",
+                                                "Bollinger",
+                                                # ChaikinMoneyFlows
+                                                "StochasticR",
+                                                "TDI",
+                                                # Momentum60Days",
+                                                # VXN
+                                                # Credit
+                                                # YieldCurve
+
                                                 "Momentum1Day",
                                                 "Momentum5Days",
-                                                "RSI",
-                                                "TDI",
-                                                "StochasticR",],
+                                                ],
                                                 index=3)
     holding_date = st.selectbox("Select Holding Date", ["1", "5"])
 # with col1:
@@ -99,11 +108,27 @@ def display_trades(TICKER, strategy, holding_date):
         st.error(f"Error: {TICKER} trades file not found.")
 
 def display_dashboard(TICKER, strategy, holding_date):
+    # Présentation du dashboard
+    st.subheader(f"Dashboard {TICKER} - {strategy} - Holding {holding_date} days")
+    st.markdown(
+        """
+        Ce dashboard présente les résultats du backtest pour la stratégie de trading sélectionnée.
+        Il inclut un graphique interactif, des statistiques clés et un tableau des trades.
+        """
+    )
     col1, col2 = st.columns([4, 1])
     with col1:
         display_html(TICKER, strategy, holding_date)
     with col2:
         display_info(TICKER, strategy, holding_date)
+    # Présentation du tableau des trades
+    st.subheader("Tableau des trades")
+    st.markdown(
+        """
+        Ce tableau présente les trades réalisés pendant la période de backtest.
+        Il inclut des informations sur le prix d'entrée, le prix de sortie, le profit réalisé, etc.
+        """
+    )
     display_trades(TICKER, strategy, holding_date)
 
 # GOOG tab content
