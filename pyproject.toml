@@ -3,14 +3,20 @@ name = "gestion-quantitative"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
     "backtesting>=0.6.4",
+    "interpret>=0.6.10",
     "ipykernel>=6.29.5",
-    "onnxruntime>=1.20.1",
+    "matplotlib>=3.10.1",
+    "nbformat>=5.10.4",
+    "onnxruntime>=1.21.1",
     "plotly>=6.0.1",
     "scikit-learn>=1.6.1",
+    "shap>=0.47.2",
+    "skl2onnx>=1.18.0",
     "streamlit>=1.44.1",
-    "ta>=0.11.0",
-    "yfinance>=0.2.56",
+    "streamlit-card>=1.0.2",
+    "yellowbrick>=1.5",
+    "yfinance>=0.2.57",
 ]
