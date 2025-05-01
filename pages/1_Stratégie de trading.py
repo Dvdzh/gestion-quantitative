@@ -175,6 +175,8 @@ with tab1:
     TICKER = "AAPL"
     display_dashboard(TICKER, strategy, holding_date)
 
+    # Recapitulatif pour 
+
 with tab2:
     TICKER = "GOOGL"
     display_dashboard(TICKER, strategy, holding_date)
