@@ -26,5 +26,6 @@ st.markdown(
     ### Cadre de travail
     IND8123 Technologies Financières pour ingénieurs, Polytechnique Montréal \n
 
+    
     """
 )
