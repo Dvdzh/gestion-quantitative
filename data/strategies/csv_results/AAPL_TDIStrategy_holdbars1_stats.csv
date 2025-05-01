@@ -2,14 +2,14 @@
 Start,2019-01-02 00:00:00
 End,2025-04-30 00:00:00
 Duration,2310 days 00:00:00
-Equity Final [$],9460.684490905722
-Return [%],-5.393155090942782
-Return (Ann.) [%],-0.8742808064282848
-Volatility (Ann.) [%],0.3046224638846824
-Sharpe Ratio,-2.8700470585099453
-Sortino Ratio,-3.3524985031125834
-Max. Drawdown [%],-5.415683708573016
+Equity Final [$],9460.683554290747
+Return [%],-5.393164457092534
+Return (Ann.) [%],-0.8742823608015704
+Volatility (Ann.) [%],0.3046225619860107
+Sharpe Ratio,-2.870051236853955
+Sortino Ratio,-3.352502513331927
+Max. Drawdown [%],-5.4156932531901685
 # Trades,1000
 Win Rate [%],48.8
-Profit Factor,0.967366355921256
-Expectancy [%],-0.019768938551725266
+Profit Factor,0.9673649444609131
+Expectancy [%],-0.019769824058630637
