@@ -72,7 +72,7 @@ def display_html(TICKER, strategy, holding_date):
     try:
         with open(f"data/strategies/html_results/{TICKER}_{strategy}Strategy_holdbars{holding_date}.html", 'r', encoding='utf-8') as f:
             html_content = f.read()
-        components.html(html_content, height=750, scrolling=True)
+        components.html(html_content, height=725, scrolling=True)
     except FileNotFoundError:
         st.error(f"Error: {TICKER} backtest results file not found.")
 
@@ -136,12 +136,7 @@ def display_info(TICKER, strategy, holding_date):
             st.metric(label="Expectancy [%]", value=expectancy, delta=round(float(expectancy-expectancy_mean), 2))
 
         
-        with st.expander("Détails sur les deltas", expanded=False):
-            st.markdown(
-                f"""
-                Deltas calculés par rapport à la moyenne pour ce titre pour chaque stratégie et date de holding. \n
-                """
-            )
+
 
     except FileNotFoundError:
         st.error(f"Error: {TICKER} backtest results file not found.")
@@ -206,7 +201,7 @@ st.markdown(
     Ce qui est logique car il y a des jours fériés et des week-ends.
     - On a implementé la stratégie de **WilliamsR** de la manière suivante : 
     Achete quand le %R est inférieur à -20 et vend quand il est inférieur à -80.
-
+    - Deltas calculés par rapport à la moyenne. Moyenne calculée sur les résultats pour un même titre et une meme date de holding, mais pour toutes les stratégies.
     """
 )
 

@@ -27,11 +27,11 @@ st.set_page_config(layout="wide")
 with st.sidebar:
     # Présentation pour chaque modèle des paramètres utilisés pour l'optimisation
     # Avec un bouton pour afficher/masquer les détails  
+    st.markdown("### Optimisation des hyperparamètres")
     st.write("Régression logistique")
     # Bouton dérouler pour plus d'informations 
     with st.expander("Détails", expanded=False):
         st.write("""
-            Optimisation des hyperparamètres pour la régression logistique :
             - **Pénalité** : L2
             - **C** : 0.1, 1, 10
             - **Solveur** : lbfgs, liblinear
