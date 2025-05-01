@@ -30,42 +30,56 @@ with st.sidebar:
 
     if strategy == "RSI":
         with st.expander("Explications de la stratégie", expanded=True):
-            st.write("Achete quand le RSI est inférieur à 40 et vend quand il est supérieur à 60.")
-            st.write(f"Vend les positions aux bout de {holding_date} jours.")
+            st.markdown(f"""
+                    - Achete quand le RSI est inférieur à 30 et vend quand il est supérieur à 70.
+                    - Vend les positions aux bout de {holding_date} jours.""")
+            # st.write("Achete quand le RSI est inférieur à 40 et vend quand il est supérieur à 60.")
+            # st.write(f"Vend les positions aux bout de {holding_date} jours.")
     elif strategy == "Bollinger":
         with st.expander("Explications de la stratégie", expanded=True):
-            st.write("Achete quand le prix est à l'intérieur des bandes de Bollinger (0 ≤ pctB ≤ 1)")
-            st.write("Vend quand il est au-dessus de la bande supérieure (pctB > 1).")
-            st.write(f"Vend les positions aux bout de {holding_date} jours.")
+            st.markdown(f"""
+                    - Achete quand le prix est à l'intérieur des bandes de Bollinger (0 ≤ pctB ≤ 1)
+                    - Vend quand il est au-dessus de la bande supérieure (pctB > 1).
+                    - Vend les positions aux bout de {holding_date} jours.""")
     elif strategy == "ChaikinMoneyFlow":
         with st.expander("Explications de la stratégie", expanded=True):
-            st.write("Achete quand le CMF est supérieur à 0.20 et vend quand il est inférieur à -0.20.")
-            st.write(f"Vend les positions aux bout de {holding_date} jours.")
+            st.markdown(f"""
+                    - Achete quand le CMF est supérieur à 0.20 et vend quand il est inférieur à -0.20.
+                    - Vend les positions aux bout de {holding_date} jours.""")
     elif strategy == "StochasticR":
         with st.expander("Explications de la stratégie", expanded=True):
-            st.write("Achete quand le %R est inférieur à 50 et vend quand il est supérieur à 90.")
-            st.write(f"Vend les positions aux bout de {holding_date} jours.")
+            st.markdown(f"""
+                    - Achete quand le %R est inférieur à -20 et vend quand il est inférieur à -80.
+                    - Vend les positions aux bout de {holding_date} jours.""")
     elif strategy == "TDI":
         with st.expander("Explications de la stratégie", expanded=True):
-            st.write("Achete quand le TDI est supérieur à 0 et le DI est supérieur à 0.")
-            st.write("Vend quand le TDI est supérieur à 0 et le DI est inférieur à 0.")
-            st.write(f"Vend les positions aux bout de {holding_date} jours.")
+            st.markdown(f"""
+                    - Achete quand le TDI est supérieur à 0 et le DI est supérieur à 0.
+                    - Vend quand le TDI est supérieur à 0 et le DI est inférieur à 0.
+                    - Vend les positions aux bout de {holding_date} jours.""")
     elif strategy == "Momentum60Day":
         with st.expander("Explications de la stratégie", expanded=True):
-            st.write("Achete quand le prix est supérieur à celui d'il y a 60 jours.")
-            st.write(f"Vend les positions aux bout de {holding_date} jours.")
+            st.markdown(f"""
+                    - Achete quand le prix est supérieur à celui d'il y a 60 jours.
+                    - Vend quand le prix est inférieur à celui d'il y a 60 jours.
+                    - Vend les positions aux bout de {holding_date} jours.""")
     elif strategy == "VXN":
         with st.expander("Explications de la stratégie", expanded=True):
-            st.write("Achete quand le VXN est supérieur à 30.")
-            st.write(f"Vend les positions aux bout de {holding_date} jours.")
+            st.markdown(f"""
+                    - Achete quand le VXN est supérieur à 30 et vend quand il est inférieur à 20.
+                    - Vend les positions aux bout de {holding_date} jours.""")
     elif strategy == "YieldCurve":
         with st.expander("Explications de la stratégie", expanded=True):
-            st.write("Achete quand le Yield Curve est supérieur à 0.20.")
-            st.write(f"Vend les positions aux bout de {holding_date} jours.")
+            st.markdown(f"""
+                    - Achete quand le Yield Curve est supérieur à 0.20 et vend quand il est inférieur à 0.10.
+                    - Vend quand le Yield Curve est supérieur à 0.20 et vend quand il est inférieur à 0.10.
+                    - Vend les positions aux bout de {holding_date} jours.""")
     elif strategy == "CreditSpread":
         with st.expander("Explications de la stratégie", expanded=True):
-            st.write("Achete quand le Credit Spread est supérieur à 0.20.")
-            st.write(f"Vend les positions aux bout de {holding_date} jours.")
+            st.markdown(f"""
+                    - Achete quand le Credit Spread est supérieur à 0.20 et vend quand il est inférieur à 0.10.
+                    - Vend quand le Credit Spread est supérieur à 0.20 et vend quand il est inférieur à 0.10.
+                    - Vend les positions aux bout de {holding_date} jours.""")
 
 
 def display_html(TICKER, strategy, holding_date):
