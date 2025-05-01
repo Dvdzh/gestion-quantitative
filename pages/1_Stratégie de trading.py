@@ -23,6 +23,7 @@ with st.sidebar:
                                                 "VXN",
                                                 "YieldCurve",
                                                 "CreditSpread",
+                                                "WilliamsR"
                                                 ],
                                                 index=0)
     holding_date = st.selectbox("Select Holding Date", ["1", "5"])
@@ -71,7 +72,7 @@ def display_html(TICKER, strategy, holding_date):
     try:
         with open(f"data/strategies/html_results/{TICKER}_{strategy}Strategy_holdbars{holding_date}.html", 'r', encoding='utf-8') as f:
             html_content = f.read()
-        components.html(html_content, height=700, scrolling=True)
+        components.html(html_content, height=750, scrolling=True)
     except FileNotFoundError:
         st.error(f"Error: {TICKER} backtest results file not found.")
 
@@ -108,16 +109,16 @@ def display_info(TICKER, strategy, holding_date):
         win_rate_mean = round(float(stats_mean_df.loc["Win Rate [%]"].iloc[0]), 2)
         profit_factor_mean = round(float(stats_mean_df.loc["Profit Factor"].iloc[0]), 2)
         expectancy_mean = round(float(stats_mean_df.loc["Expectancy [%]"].iloc[0]), 2)
-
-
-        st.info(
-            f"""
-            **Start :** {start} \n
-            **End :** {end} \n
-            **Duration :** {duration}
-            """
-        )
     
+        with st.expander("Détails des résultats", expanded=True):
+            st.markdown(
+                f"""
+                **Start :** {start} \n
+                **End :** {end} \n
+                **Duration :** {duration}
+                """
+            )
+
         subcol1, subcol2 = st.columns(2)
         with subcol1:
             # return, return ann, volatility ann, sharpe ratio, sortino ratio
@@ -133,6 +134,14 @@ def display_info(TICKER, strategy, holding_date):
             st.metric(label="Win Rate [%]", value=win_rate, delta=round(float(win_rate-win_rate_mean), 2))
             st.metric(label="Profit Factor", value=profit_factor, delta=round(float(profit_factor-profit_factor_mean), 2))
             st.metric(label="Expectancy [%]", value=expectancy, delta=round(float(expectancy-expectancy_mean), 2))
+
+        
+        with st.expander("Détails sur les deltas", expanded=False):
+            st.markdown(
+                f"""
+                Deltas calculés par rapport à la moyenne pour ce titre pour chaque stratégie et date de holding. \n
+                """
+            )
 
     except FileNotFoundError:
         st.error(f"Error: {TICKER} backtest results file not found.")
@@ -191,13 +200,13 @@ with tab3:
 # Statistique dashboard droite : calculé par rapport à la moyenne pour ce titre pour chaque stratégie et hold date
 st.markdown(
     """
-    ### Remarque 
-    
-    On peut noter que pour la stratégie de holding d'un jour, la plupart des trades sont fermés entre 1 et 3 jours.
+    ### Remarques 
+    - On peut noter que pour la stratégie de holding d'un jour, la plupart des trades sont fermés entre 1 et 3 jours.
     Pour la stratégie de holding de 5 jours, la plupart des trades sont fermés entre 5 et 10 jours.
     Ce qui est logique car il y a des jours fériés et des week-ends.
+    - On a implementé la stratégie de **WilliamsR** de la manière suivante : 
+    Achete quand le %R est inférieur à -20 et vend quand il est inférieur à -80.
 
-    Les statistiques sur le tableau de droite sont calculées par rapport à la moyenne pour ce titre pour chaque stratégie et date de holding.
     """
 )
 

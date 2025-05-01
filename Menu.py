@@ -15,14 +15,16 @@ st.markdown(
     Vous pouvez explorer différentes fonctionnalités via les pages disponibles dans la barre latérale.
 
     ### Fonctionnalités principales :
-    - Analyse des données financières 📊
-    - Visualisation des performances 📈
-    - Modèles prédictifs avancés 🤖
+    - Analyse de stratégie de trading 📊
+    - Classification de série temporelle 📈
 
     ### Comment commencer ?
     Utilisez la barre latérale pour naviguer entre les différentes pages et découvrir les outils disponibles.
 
     ---
-    **Astuce :** N'oubliez pas de sauvegarder vos entrées pour une expérience personnalisée !
+
+    ### Cadre de travail
+    IND8123 Technologies Financières pour ingénieurs, Polytechnique Montréal \n
+
     """
 )
