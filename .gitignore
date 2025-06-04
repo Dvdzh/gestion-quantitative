@@ -1,0 +1,24 @@
+# Ignore les fichiers de configuration sensibles
+secret.py
+secret.pyc
+
+# Fichiers Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environnements virtuels
+env/
+venv/
+.venv/
+
+# Fichiers de logs
+*.log
+
+# Fichiers Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# MacOS
+.DS_Store
+uv.lock
