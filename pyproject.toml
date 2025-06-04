@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "backtesting>=0.6.4",
+    "fredapi>=0.5.2",
     "interpret>=0.6.10",
     "ipykernel>=6.29.5",
     "matplotlib>=3.10.1",
