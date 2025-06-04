@@ -22,22 +22,6 @@ Ce projet a pour objectif de développer, tester et analyser des stratégies de 
 - `docs/` : Documentation et ressources supplémentaires.
 - `secret.py.example` : Exemple de fichier de configuration pour les clés API.
 
-## Installation
-
-1. Clonez le dépôt :
-   ```bash
-   git clone <url-du-repo>
-   cd gestion-quantitative
-   ```
-2. Installez les dépendances :
-   ```bash
-   pip install -r requirements.txt
-   ```
-   ou, si vous utilisez uv :
-   ```bash
-   uv sync
-   ```
-
 ## Utilisation
 
 - Lancez le menu principal :
